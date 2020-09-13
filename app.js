@@ -14,22 +14,21 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 let interval;
-let latestMessage = ''
+const messages = []
 
 io.on('connection', (socket) => {
   console.log('New client connected');
 
   socket.on('disconnect', () => {
     console.log('Client disconnected');
-    clearInterval(interval);
   });
 
-  socket.on('newMessage', (msg) => {
-    latestMessage = msg
-    socket.emit('latestMessage', latestMessage);
+  socket.on('sendMessage', (msg) => {
+    messages.push(msg);
+    socket.emit('newMessage', msg);
   })
 
-  socket.emit('latestMessage', latestMessage)
+  socket.emit('messageHistory', messages)
 });
 
 server.listen(port, () => console.log(`Listening on port ${port}`));
