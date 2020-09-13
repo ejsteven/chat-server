@@ -28,6 +28,8 @@ io.on('connection', (socket) => {
     latestMessage = msg
     socket.emit('latestMessage', latestMessage);
   })
+
+  socket.emit('latestMessage', latestMessage)
 });
 
 server.listen(port, () => console.log(`Listening on port ${port}`));
